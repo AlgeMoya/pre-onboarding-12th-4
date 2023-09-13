@@ -1,23 +1,19 @@
-# 프리온보딩 3주차 과제
+# 프리온보딩 4주차 과제
 
 ## 🚀 팀원
 강석규
 
 ## 🌐 배포 주소
-https://pre-onboarding-12th-3-chi.vercel.app/
+https://pre-onboarding-12th-4-alpha.vercel.app/
 
 ## ⚙ 실행 방법
 1. 프로젝트 내려받기: `git clone <https://github.com/AlgeMoya/pre-onboarding-12th-3-8.git> ./`
 2. 패키지 설치: `npm install`
 3. 애플리케이션 실행: `npm start` (브라우저가 자동으로 실행되어 홈페이지로 이동)
 
-## 📁 프로젝트 디렉토리 설명:
-- **src/mocks**: Mock Service Worker 관련 함수 관리
-- **src/components**: 반복적으로 사용되는 컴포넌트 관리  
-
-**API**:
-
-- **`/sick?q=질병명`** : q에 담긴 키워드를 포함하는 질병 ID와 병명 요청
+## 🔨구현 사항
+- **axios 인스턴스**: 서버 요청시 공통 로직 한 파일에서 관리
+- **reducer 사용**: 상태 업데이트 의도 파악 및 재활용 가능성
 
 ### **검색어 호출 기능**
 
