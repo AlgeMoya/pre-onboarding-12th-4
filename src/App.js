@@ -1,12 +1,12 @@
+import mockData from "./mock/mock_data.json";
 import "./App.css";
 import { useState, useEffect } from "react";
-import { Bar, Line } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
 Chart.register(CategoryScale);
 
 function App() {
-  const [selectedFile, setSelectedFile] = useState(null);
   const [jsonData, setJsonData] = useState();
   const [date, setDate] = useState([]);
   const [id, setId] = useState([]);
@@ -83,49 +83,6 @@ function App() {
     },
   };
 
-  // 파일 입력(input)의 내용이 변경될 때 실행되는 핸들러
-  const handleFileChange = (event) => {
-    const file = event.target.files[0]; // 첫 번째 파일만 고려
-    setSelectedFile(file);
-  };
-
-  // 버튼 클릭 시 파일 내용을 출력하는 핸들러
-  const handleUpload = () => {
-    if (selectedFile) {
-      console.log("선택한 파일 내용:", selectedFile);
-      // FileReader 객체를 생성하여 파일 내용 읽기
-      const reader = new FileReader();
-
-      reader.onload = (event) => {
-        try {
-          // 읽은 파일 내용을 JSON 파싱하여 출력
-          const jsonContent = JSON.parse(event.target.result);
-          const objects = [];
-
-          for (const key in jsonContent.response) {
-            if (jsonContent.response.hasOwnProperty(key)) {
-              const newObj = {
-                date: key,
-                id: jsonContent.response[key].id,
-                value_area: jsonContent.response[key].value_area,
-                value_bar: jsonContent.response[key].value_bar,
-              };
-              objects.push(newObj);
-            }
-          }
-
-          setJsonData(objects);
-        } catch (error) {
-          console.error("JSON 파싱 오류:", error);
-        }
-      };
-
-      reader.readAsText(selectedFile); // 파일을 텍스트로 읽기
-    } else {
-      console.log("파일이 선택되지 않았습니다.");
-    }
-  };
-
   useEffect(() => {
     // jsonData가 업데이트될 때마다 실행됨
     if (jsonData) {
@@ -136,17 +93,31 @@ function App() {
     }
   }, [jsonData]);
 
+  useEffect(() => {
+    console.log(mockData.response);
+
+    const objects = [];
+
+    for (const key in mockData.response) {
+      if (mockData.response.hasOwnProperty(key)) {
+        const newObj = {
+          date: key,
+          id: mockData.response[key].id,
+          value_area: mockData.response[key].value_area,
+          value_bar: mockData.response[key].value_bar,
+        };
+        objects.push(newObj);
+      }
+    }
+
+    setJsonData(objects);
+  }, []);
+
   return (
     <div className="App">
       <div style={{ margin: "0 auto" }}>
         <Line type="line" data={data} options={options} />
       </div>
-      <form action="/uploadFile" enctype="multipart/form-data" method="post">
-        <input type="file" name="myFile" onChange={handleFileChange} />
-        <button type="button" onClick={handleUpload}>
-          업로드
-        </button>
-      </form>
     </div>
   );
 }
